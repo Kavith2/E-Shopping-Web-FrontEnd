@@ -1,0 +1,43 @@
+<app-header></app-header>
+<div *ngIf="cartItems.length > 0; else emptyCart" class="cart-container">
+  <div class="cart-item" *ngFor="let item of cartItems">
+    
+    <div class="item-info">
+      <strong>{{ item.productName || 'Product Name' }}</strong>
+      <p>Price: ${{ item.productPrice }}</p>
+    </div>
+
+    <div class="item-actions">
+      <label for="qty-{{item.productId}}">
+        Qty:
+        <input
+          id="qty-{{item.productId}}"
+          type="number"
+          min="1"
+          [(ngModel)]="item.quantity"
+          (keyup)="updateQuantity(item.productId!, item.quantity)"
+          
+        />
+      </label>
+
+      <button (click)="removeItem(item.productId!)">
+        Remove
+      </button>
+    </div>
+  </div>
+
+  <div class="cart-summary" role="contentinfo" aria-live="polite">
+    <h3>Total: ${{ getTotal() }}</h3>
+    <button type="button"  aria-label="Proceed to checkout"><a class="c-link" routerLink="/checkout">Checkout</a></button>
+  </div>
+</div>
+
+<ng-template #emptyCart>
+  <div class="empty-cart">
+    <span class="empty-icon">🛒</span>
+    <h3>Your cart is empty</h3>
+    <p>Looks like you haven’t added anything yet.</p>
+    <button routerLink="/products" class="shop-button">Start shopping</button>
+  </div>
+</ng-template>
+

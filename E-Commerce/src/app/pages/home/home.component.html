@@ -1,0 +1,61 @@
+<app-header></app-header>
+
+<div class="home-container">
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Welcome to TrendKart</h1>
+      <p>Shop the best deals on electronics, fashion, and more</p>
+      <button routerLink="/products">Shop Now</button>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="categories">
+    <h2>Shop by Category</h2>
+    <div class="category-list">
+      <div class="category-card" routerLink="/category/fashion">
+        <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f" alt="Fashion" />
+        <p>Fashion</p>
+      </div>
+      <div class="category-card" routerLink="/category/electronics">
+        <img src="assets/images/pexels-pixabay-356056.jpg" alt="Electronics" />
+        <p>Electronics</p>
+      </div>
+      <div class="category-card" routerLink="/category/home">
+        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7" alt="Home" />
+        <p>Home</p>
+      </div>
+      <div class="category-card" routerLink="/category/toys">
+        <img src="assets/images/kidstoy.jpeg" alt="Toys" />
+        <p>Toys</p>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="newsletter">
+    <h2>Stay Updated</h2>
+    <p>Get the latest deals and offers straight to your inbox</p>
+    <form class="newsletter-form">
+      <input type="email" placeholder="Enter your email" required />
+      <button type="submit">Subscribe</button>
+    </form>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a routerLink="/about">About Us</a>
+      <a routerLink="/contact">Contact</a>
+      <a routerLink="/privacy">Privacy Policy</a>
+      <a href="https://facebook.com" target="_blank">Facebook</a>
+    </div>
+    <p>© 2025 TrendKart. All rights reserved.</p>
+  </footer>
+
+
+
+
+</div>

@@ -1,0 +1,20 @@
+<nav class="navbar">
+  <div class="nav-left">
+    <a routerLink="/home">Home</a>
+  </div>
+  <div class="nav-right">
+    <a routerLink="/cart" class="cart-icon">
+     <i class="fa-solid fa-cart-shopping custom-icon"></i> <span class="badge">{{ cartCount | number }}</span>
+    </a>
+    <div class="logout-wrapper" (clickOutside)="showDropdown = false">
+  <!-- Trigger Button -->
+  <button (click)="toggleDropdown()" class="logout-button">
+    <i class="fa-solid fa-power-off"></i> <!-- Or just text: Logout -->
+  </button>
+  <div class="logout-dropdown" *ngIf="showDropdown">
+    <button (click)="logout()">Log out</button>
+  </div>
+</div>
+  </div>
+</nav>
+

@@ -1,0 +1,21 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: auto;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+  /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important; /* clears autofill bg */
+  background: linear-gradient(to bottom, #2671ab, #68a0bb) !important; /* your gradient */
+  -webkit-text-fill-color: rgb(10, 9, 9) !important; /* text color */
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+

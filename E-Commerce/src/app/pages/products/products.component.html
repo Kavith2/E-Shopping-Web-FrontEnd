@@ -1,0 +1,31 @@
+<app-header></app-header>
+<section class="products-header">
+  <div>
+    <h2 class="products-title">All Products</h2>
+  </div>
+</section>
+
+<div class="products-container">
+  <div class="products-grid">
+    <div class="product-card" *ngFor="let product of products; let i = index">
+      <img [src]="environment.apiUrl + product.image" alt="{{ product.name }}" />
+
+      <div class="product-details">
+        <h3 class="product-name">{{ product.name }}</h3>
+
+        <p class="product-description" [class.expanded]="expandedIndex === i">
+          {{ product.description }}
+        </p>
+
+        <button class="toggle-desc-button" (click)="toggleExpand(i)">
+          {{ expandedIndex === i ? 'Show Less' : 'Show More' }}
+        </button>
+
+        <div class="product-footer">
+          <p class="product-price">Rs. {{ product.price | formatPrice }}</p>
+          <button class="buy-button">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

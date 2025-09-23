@@ -1,0 +1,65 @@
+.checkout-container{
+  background: rgb(196, 196, 199);
+  display: flex;
+  gap: 20px;           /* space between cards */
+  align-items: flex-start;
+  padding-right: 30px;
+}
+
+.checkout-header{
+
+  margin-bottom: -90px;
+}
+
+
+h1{
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 120px;
+    font-size: 40px;
+    font-weight: 500;
+}
+
+h4{
+    font-size: 20px;
+    font-weight: 500;
+    text-align: left;
+}
+
+.small-input{
+  display: block;
+  width: 450px;
+  margin-left: 100px;
+  justify-content: center;
+  display: flex;
+ 
+}
+.checkout-right {
+  flex: 1;
+}
+
+.checkout-card{
+    width: 700px;
+    height: auto;
+    text-align: center;
+    border-radius: 10px;
+    margin-left: 100px;
+    margin-bottom: 100px;
+    margin-top: 50px;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px 10px 10px 10px;
+}
+
+.checkout-card {
+  flex: 1;             /* both take equal width */
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.summary-item  {
+  font-weight: 900px;
+  font-size: 15px;
+}

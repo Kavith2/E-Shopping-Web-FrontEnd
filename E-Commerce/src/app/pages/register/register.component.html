@@ -1,0 +1,38 @@
+<div>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-left">
+                <img src="assets/images/ChatGPT Image Jun 24, 2025, 02_29_15 PM.png" alt="Login Image" />
+            </div>
+            <div class="login-right">
+                <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+                    <mat-form-field appearance="outline" class="small-input">
+                        <mat-label>Name (with Surname)</mat-label>
+                        <input matInput placeholder="Enter name" formControlName="name" />
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="outline" class="small-input">
+                        <mat-label>Email</mat-label>
+                        <input matInput type="email" placeholder="Enter your email" formControlName="email" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="small-input">
+                        <mat-label>Password</mat-label>
+                        <input matInput type="password" placeholder="Enter your password" formControlName="password" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="small-input">
+                        <mat-label>Confirm Password</mat-label>
+                        <input matInput type="password" placeholder="Confirm password" formControlName="confirmPassword" />
+                    </mat-form-field>
+
+
+
+                    <button class="login-button" type="submit"  [disabled]="registerForm.invalid">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
