@@ -1,35 +1,37 @@
 <app-header></app-header>
-<div *ngIf="cartItems.length > 0; else emptyCart" class="cart-container">
-  <div class="cart-item" *ngFor="let item of cartItems">
-    
-    <div class="item-info">
-      <strong>{{ item.productName || 'Product Name' }}</strong>
-      <p>Price: ${{ item.productPrice }}</p>
+
+<div class="cart-wrapper">
+  <div *ngIf="cartItems.length > 0" class="cart-container">
+    <div class="cart-item" *ngFor="let item of cartItems">
+      <div class="item-info">
+        <strong>{{ item.productName || 'Product Name' }}</strong>
+        <p>Price: Rs: {{ item.productPrice }}</p>
+      </div>
+
+      <div class="item-actions">
+        <label for="qty-{{item.productId}}">
+          Qty:
+          <input
+            id="qty-{{item.productId}}"
+            type="number"
+            min="1"
+            [(ngModel)]="item.quantity"
+            (change)="updateQuantity(item.productId!, item.quantity)"
+          />
+        </label>
+        <button (click)="removeItem(item.productId!)">Remove</button>
+      </div>
     </div>
 
-    <div class="item-actions">
-      <label for="qty-{{item.productId}}">
-        Qty:
-        <input
-          id="qty-{{item.productId}}"
-          type="number"
-          min="1"
-          [(ngModel)]="item.quantity"
-          (keyup)="updateQuantity(item.productId!, item.quantity)"
-          
-        />
-      </label>
-
-      <button (click)="removeItem(item.productId!)">
-        Remove
-      </button>
+    <div class="cart-summary" role="contentinfo" aria-live="polite">
+      <h3 class="fw-bold">Total: Rs: {{ getTotal() }}</h3>
+        <button type="button" class="btn btn-warning" (click)="goToCheckout()">Checkout</button>
     </div>
   </div>
 
-  <div class="cart-summary" role="contentinfo" aria-live="polite">
-    <h3>Total: ${{ getTotal() }}</h3>
-    <button type="button"  aria-label="Proceed to checkout"><a class="c-link" routerLink="/checkout">Checkout</a></button>
-  </div>
+  <ng-container *ngIf="cartItems.length === 0">
+    <ng-container *ngTemplateOutlet="emptyCart"></ng-container>
+  </ng-container>
 </div>
 
 <ng-template #emptyCart>
@@ -40,4 +42,3 @@
     <button routerLink="/products" class="shop-button">Start shopping</button>
   </div>
 </ng-template>
-

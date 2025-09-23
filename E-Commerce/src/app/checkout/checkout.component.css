@@ -1,10 +1,30 @@
-.checkout-container{
-  background: rgb(196, 196, 199);
-  display: flex;
-  gap: 20px;           /* space between cards */
-  align-items: flex-start;
-  padding-right: 30px;
+.checkout-container {
+  background: #73a3d3; /* light gray background */
+  min-height: 100vh;
 }
+
+.card {
+  border-radius: 12px;
+  border: none;
+}
+
+.card h4 {
+  font-weight: 600;
+}
+
+button.btn-primary {
+  background: #007bff;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+button.btn-primary:hover {
+  background: #0056b3;
+}
+
 
 .checkout-header{
 
@@ -54,7 +74,6 @@ h4{
 .checkout-card {
   flex: 1;             /* both take equal width */
   padding: 20px;
-  border: 1px solid #ddd;
   border-radius: 8px;
   background: #fff;
 }

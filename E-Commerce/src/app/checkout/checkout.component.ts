@@ -21,7 +21,7 @@ export class CheckoutComponent {
   
   ) {
     this.checkoutForm = this.fb.group({
-      address: ['', [Validators.required, Validators.email]],
+      address: ['', [Validators.required]],
       email: ['', Validators.required],
       name:['', Validators.required],
       cvv:['', Validators.required],

@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AddToCartRequest } from '../models/add-to-cart-request';
 import { RemoveFromCartRequest } from '../models/remove-from-cart-request';
 import { Cart, CartItem } from '../models/cart-item';
+import { UpdateQuantityRequest } from '../models/update-quantity-request';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,12 @@ export class CartService {
       })
     );
   }
+
+  updateQuantity(productId: string, request: UpdateQuantityRequest): Observable<any> {
+  return this.http.put(`${this.apiUrl}/update/${productId}`, request);
+  
+}
+
 
   clearCart(userId: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/clear/${userId}`).pipe(
