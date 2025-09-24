@@ -13,6 +13,11 @@
   font-size: 25px; 
 }
 
+span{
+  color: white;
+  font-size: 15px;
+}
+
 .badge {
   background-color: red;
   color: white;

@@ -1,7 +1,8 @@
-<div class="checkout-container container py-5">
-    <h2 class="text-center mb-4">Checkout</h2>
+<div class="checkout-container" >
+    <h2 class="text-center">Checkout!</h2>
+</div>
 
-    <div class="row">
+    <div class="row mt-4 p-4" *ngIf="!orderPlaced;">
         <div class="col-lg-7 col-md-9 mb-4">
             <div class="card shadow-sm p-3">
                 <h4 class="mb-3">Customer Information</h4>
@@ -29,8 +30,8 @@
                     </mat-form-field>
                     <div>
                         <mat-form-field appearance="outline" class="col-md-6">
-                            <mat-label>Expiration Date</mat-label>
-                            <input matInput placeholder="MM/YY" formControlName="expirationDate" />
+                            <mat-label>Expiration Date </mat-label>
+                            <input matInput placeholder="MM/YY" type="date" formControlName="expirationDate" />
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="col-md-6 ps-3">
                             <mat-label>CVV</mat-label>
@@ -57,8 +58,15 @@
                     <span>Total:</span>
                     <span>Rs: {{ checkoutPrice() }}</span>
                 </div>
-                <button type="button" [disabled]="!checkoutForm.valid" class="btn btn-success wd-100 mt-3">Place Order</button>
+                <button type="button" [disabled]="!checkoutForm.valid" class="btn btn-success wd-100 mt-3" (click)="placeOrder()">Place Order</button>
             </div>
         </div>
     </div>
+
+
+
+<div *ngIf="orderPlaced" class="thank-you text-center">
+  <h1>🎉 Thank you for your order!</h1>
+  <p>Your order has been placed successfully.</p>
+    <button routerLink="/products" class="btn btn-success mt-4">Continue Shopping</button>
 </div>

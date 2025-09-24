@@ -15,6 +15,7 @@ import { CartService } from 'src/app/services/cart.service';
 export class CartComponent {
     cartItems: CartItem[] = [];
     Products: Products[] = [];
+    EmptyCart:boolean = false;
     productName: string = '';
     userId : string | null = null;
 
