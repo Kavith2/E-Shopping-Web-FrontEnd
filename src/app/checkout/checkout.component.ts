@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Cart, CartItem } from '../models/cart-item';
+import { CartItem } from '../models/cart-item';
 import { CartService } from '../services/cart.service';
 import { AuthService } from '../services/auth.service';
-import { Order } from '../models/order';
 
 @Component({
   selector: 'app-checkout',
@@ -11,45 +10,37 @@ import { Order } from '../models/order';
   styleUrls: ['./checkout.component.css']
 })
 export class CheckoutComponent {
-  checkoutForm: FormGroup;
-  CartItem: CartItem[] = [];
-  cart: Cart = new Cart();
-  orderPlaced: boolean = false;
-  userId: string | null = null;
+  checkoutForm:FormGroup;
+  CartItem: CartItem[]=[];
+   userId : string | null = null;
 
-  constructor(
+   constructor(
     private fb: FormBuilder,
     private cartService: CartService,
     private authService: AuthService
-
+  
   ) {
     this.checkoutForm = this.fb.group({
-      address: ['', [Validators.required]],
+      address: ['', [Validators.required, Validators.email]],
       email: ['', Validators.required],
-      name: ['', Validators.required],
-      cvv: ['', Validators.required],
-      expirationDate: ['', Validators.required],
-      cardNumber: ['', Validators.required]
+      name:['', Validators.required],
+      cvv:['', Validators.required],
+      expirationDate:['', Validators.required],
+      cardNumber:['', Validators.required]
     });
   }
 
-  ngOnInit(): void {
+    ngOnInit(): void {
     this.userId = this.authService.getUserId();
     if (!this.userId) {
       console.error('User not authenticated or token missing');
       return;
     }
     this.loadCartitems();
-
-    this.cartService.getCartByUserId(this.userId!).subscribe(cart => {
-      this.cart = cart;   // now cart.items has actual products
-    });
-
-
-
+    
   }
 
-  loadCartitems() {
+  loadCartitems(){
     this.cartService.getCartByUserId(this.userId!).subscribe({
       next: (cart) => {
         this.CartItem = cart.items;
@@ -60,34 +51,31 @@ export class CheckoutComponent {
     });
   }
 
+  placeOrderBtn(){
+    if (this.checkoutForm.valid) {
+      const orderDetails = {
+        userId: this.userId,
+        items: this.CartItem,
+        total: this.checkoutPrice(),
+        shippingAddress: this.checkoutForm.value.address
+      };
+      // Call the service to place the order
+      this.cartService.placeOrder(orderDetails).subscribe({
+        next: (response) => {
+          console.log('Order placed successfully', response);
+        },
+        error: (err) => {
+          console.error('Error placing order', err);
+        }
+      });
+    } else {
+      console.error('Form is invalid');
+    }
+  }
+
   checkoutPrice(): number {
     return this.CartItem.reduce((sum, item) => sum + (item.productPrice || 0) * item.quantity, 0);
   }
 
-  placeOrder() {
-    if (!this.cart.items.length) {
-      alert("Cart is empty!");
-      return;
-    }
-    const order = {
-      userId: this.userId!,
-      items: this.cart.items,
-      totalPrice: this.checkoutPrice()
-    };
-
-    console.log('Placing order:', order);
-
-    this.cartService.saveOrder(order).subscribe({
-      next: () => {
-        this.cart.items = [];
-        this.checkoutForm.reset();
-        alert('Order placed successfully!');
-        this.orderPlaced = true; 
-        this.cartService.clearCart(this.userId!).subscribe();
-      },
-      error: err => console.error('Error placing order', err)
-    });
-  }
-
-
+ 
 }
