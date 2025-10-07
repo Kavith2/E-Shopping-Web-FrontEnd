@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CartService } from '../services/cart.service';
 import { CartItem } from '../models/cart-item';
 import { AuthService } from '../services/auth.service';
+import { CartUiService } from '../services/cartUi.service';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +16,11 @@ export class HeaderComponent {
   cartCount: number = 0;
   showDropdown = false;
 
-  constructor(private router: Router, private cartService: CartService, private authService: AuthService) {}
+  constructor(
+    private router: Router, 
+    private cartService: CartService,
+    public cartuiService:CartUiService, 
+    private authService: AuthService) {}
 
  ngOnInit() {
     const userId = this.authService.getUserId();
@@ -26,6 +31,10 @@ export class HeaderComponent {
     this.cartService.cartCount$.subscribe(count => {
       this.cartCount = count;
     });
+  }
+
+  openCart(){
+    this.cartuiService.openCart();
   }
 
 

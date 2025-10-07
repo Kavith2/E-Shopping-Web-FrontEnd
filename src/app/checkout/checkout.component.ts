@@ -4,6 +4,11 @@ import { Cart, CartItem } from '../models/cart-item';
 import { CartService } from '../services/cart.service';
 import { AuthService } from '../services/auth.service';
 import { Order } from '../models/order';
+import { ProductService } from '../services/product.service';
+import { Products } from '../models/products';
+import { environment } from 'src/environments/environment';
+import { UpdateQuantityRequest } from '../models/update-quantity-request';
+import { RemoveFromCartRequest } from '../models/remove-from-cart-request';
 
 @Component({
   selector: 'app-checkout',
@@ -11,16 +16,20 @@ import { Order } from '../models/order';
   styleUrls: ['./checkout.component.css']
 })
 export class CheckoutComponent {
+  envirnoment = environment;
   checkoutForm: FormGroup;
   CartItem: CartItem[] = [];
+  Product: Products[]=[]
   cart: Cart = new Cart();
   orderPlaced: boolean = false;
   userId: string | null = null;
+  selectedPayement: string = "1";
 
   constructor(
     private fb: FormBuilder,
     private cartService: CartService,
-    private authService: AuthService
+    private authService: AuthService,
+    private productService: ProductService
 
   ) {
     this.checkoutForm = this.fb.group({
@@ -45,9 +54,77 @@ export class CheckoutComponent {
       this.cart = cart;   // now cart.items has actual products
     });
 
-
+    this.productService.getAllProducts().subscribe({
+  next: (products) => {
+    this.Product = products;
+  },
+  error: (err) => {
+    console.error('Error loading products:', err);
+  }
+});
+    
 
   }
+
+getProductImage(productId: string) {
+  const product = this.Product.find(p => p.id === productId);
+  if (product?.image) {
+    return  environment.apiUrl +  product.image;
+  }
+  return environment.apiUrl;
+}
+
+
+increaseQuantity(item: CartItem): void {
+  item.quantity++;
+  this.updateQuantity(item.productId!, item.quantity);
+}
+
+decreaseQuantity(item: CartItem): void {
+  if (item.quantity > 1) {
+    item.quantity--;
+    this.updateQuantity(item.productId!, item.quantity);
+  }
+}
+
+loadCart(): void {
+  if (!this.userId) return;
+
+  this.cartService.getCartByUserId(this.userId).subscribe({
+    next: (cart) => {
+      this.CartItem = cart?.items || [];
+    },
+    error: (error) => {
+      console.error('Error loading cart items', error);
+    }
+  });
+}
+
+ removeItem(productId: string): void {
+     if (!this.userId) return;
+    const request: RemoveFromCartRequest = {
+      UserId: this.userId,
+      ProductId: productId
+    };
+    this.cartService.removeFromCart(request).subscribe(() => {
+      this.loadCart();
+    });
+  }
+
+updateQuantity(productId: string, quantity: number) {
+  const item = this.CartItem.find(i => i.productId === productId);
+  if (!item || !this.userId) return;
+
+  console.log('Updating quantity for productId:', productId, 'to', quantity);
+  item.quantity = quantity;
+  item.subTotal = item.quantity * item.productPrice!;
+
+  const request: UpdateQuantityRequest = {
+    UserId: this.userId,
+    Quantity: quantity
+  };
+
+}
 
   loadCartitems() {
     this.cartService.getCartByUserId(this.userId!).subscribe({

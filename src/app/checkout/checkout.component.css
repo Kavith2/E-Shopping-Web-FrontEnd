@@ -12,6 +12,78 @@ h2{
   border: none;
 }
 
+.form-color {
+  box-shadow: 3px 9px 12px rgba(0, 0, 0, 0.8);
+  
+}
+
+.cart-item-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+img{
+  width: 40px;
+  height: 40px;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: none;
+}
+
+.subtotal {
+  display: flex;
+  align-items: center;
+  font-size: 17px;
+  font-weight: bold;
+  color: #070505; 
+}
+
+.remove-btn {
+  background: transparent;
+  border: none;
+  color: #ff4d4d;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.order{
+  box-shadow:  2px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+}
+
+.cart-item-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.qty-btn {
+  background-color: #d26363;
+  border: none;
+  font-size: 18px;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.product-heading{
+  font-size: 15px;
+  font-weight: 500;
+  padding-top: 30px;
+}
+
+
 .card h4 {
   font-weight: 600;
 }
@@ -30,12 +102,6 @@ button.btn-primary:hover {
 }
 
 
-.checkout-header{
-
-  margin-bottom: -90px;
-}
-
-
 h1{
     text-align: center;
     margin-top: 50px;
@@ -50,14 +116,7 @@ h4{
     text-align: left;
 }
 
-.small-input{
-  display: block;
-  width: 450px;
-  margin-left: 100px;
-  justify-content: center;
-  display: flex;
- 
-}
+
 .checkout-right {
   flex: 1;
 }

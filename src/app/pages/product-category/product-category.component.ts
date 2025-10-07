@@ -7,6 +7,7 @@ import { CartService } from 'src/app/services/cart.service';
 import { AddToCartRequest } from 'src/app/models/add-to-cart-request';
 import { AuthService } from 'src/app/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CartUiService } from 'src/app/services/cartUi.service';
 
 @Component({
   selector: 'app-product-category',
@@ -24,6 +25,7 @@ export class ProductCategoryComponent implements OnInit {
     private productService: ProductService,
     private route: ActivatedRoute,
     private cartService: CartService,
+    public cartuiService:CartUiService,
     private authService: AuthService,
      private snackBar: MatSnackBar
   ) {}
@@ -52,10 +54,12 @@ export class ProductCategoryComponent implements OnInit {
     };
 
     this.cartService.addToCart(request).subscribe({
-    next: () => this.snackBar.open('Product added to cart!', 'Close', {
-          duration: 3000,
-          panelClass: ['snackbar-success']
-    }),
+      next: () =>{ this.snackBar.open('Product added to cart!', 'Close', {
+        duration: 3000,
+        panelClass: ['snackbar-success'],
+      }),
+      this.cartuiService.openCart();
+      },
     error: (err) => console.error('Error adding to cart:', err)
     });
   }

@@ -19,6 +19,8 @@ import { ProductCategoryComponent } from './pages/product-category/product-categ
 import { CartComponent } from './pages/cart/cart.component';
 import { HeaderComponent } from './header/header.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { MatRadioModule } from '@angular/material/radio';
+
 
   // <-- here
 
@@ -47,7 +49,9 @@ import { CheckoutComponent } from './checkout/checkout.component';
     ReactiveFormsModule,
     HttpClientModule,
     MatSnackBarModule,
-    FormsModule 
+    FormsModule,
+    MatRadioModule
+    
    ,
   ],
   providers: [],

@@ -6,6 +6,9 @@ import { RemoveFromCartRequest } from 'src/app/models/remove-from-cart-request';
 import { UpdateQuantityRequest } from 'src/app/models/update-quantity-request';
 import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
+import { CartUiService } from 'src/app/services/cartUi.service';
+import { ProductService } from 'src/app/services/product.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-cart',
@@ -13,14 +16,18 @@ import { CartService } from 'src/app/services/cart.service';
   styleUrls: ['./cart.component.css'],
 })
 export class CartComponent {
+  environment = environment;
     cartItems: CartItem[] = [];
     Products: Products[] = [];
     EmptyCart:boolean = false;
     productName: string = '';
     userId : string | null = null;
+    showCart: boolean = false;
 
   constructor(private cartService: CartService,
               private authService: AuthService,
+              private productService: ProductService,
+              public cartuiService:CartUiService,
               private router:Router) {}
 
   ngOnInit(): void {
@@ -29,9 +36,38 @@ export class CartComponent {
       console.error('User not authenticated or token missing');
       return;
     }
-    this.loadCart();
-    
+    this.cartuiService.cartVisible$.subscribe(isVisible => {
+      this.showCart = isVisible;
+      if(isVisible){
+      this.loadCart();
+      }
+    });
+
+    this.productService.getAllProducts().subscribe({
+  next: (products) => {
+    this.Products = products;
+  },
+  error: (err) => {
+    console.error('Error loading products:', err);
   }
+});
+    
+
+  }
+
+getProductImage(productId: string): string {
+  const product = this.Products.find(p => p.id === productId);
+
+  // If product found → return full backend URL + image path
+  if (product?.image) {
+    return this.environment.apiUrl + product.image;
+  }
+
+  // Fallback (if product not found or has no image)
+  return this.environment.apiUrl;
+}
+
+
 
 
 loadCart(): void {
@@ -47,6 +83,10 @@ loadCart(): void {
   });
 }
 
+
+ closeCart() {
+    this.cartuiService.closeCart();
+  }
 
 
   removeItem(productId: string): void {
@@ -73,6 +113,7 @@ updateQuantity(productId: string, quantity: number) {
     Quantity: quantity
   };
 
+
   this.cartService.updateQuantity(productId, request)
     .subscribe({
       next: () => {
@@ -82,9 +123,22 @@ updateQuantity(productId: string, quantity: number) {
     });
 }
 
+increaseQuantity(item: CartItem): void {
+  item.quantity++;
+  this.updateQuantity(item.productId!, item.quantity);
+}
+
+decreaseQuantity(item: CartItem): void {
+  if (item.quantity > 1) {
+    item.quantity--;
+    this.updateQuantity(item.productId!, item.quantity);
+  }
+}
+
 
 goToCheckout(): void {
   this.router.navigate(['/checkout']);
+  this.closeCart();
 }
 
 getTotal(): number {

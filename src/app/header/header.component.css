@@ -1,12 +1,16 @@
 .navbar {
   display: flex;
+  position:sticky;
+  top: 0;
   justify-content:space-between;
   padding: 20px;
+  z-index: 1;
   background: #403f3f;
 }
 
 .cart-icon {
   position: relative;
+  cursor: pointer;
 }
 
 .custom-icon {
@@ -15,7 +19,7 @@
 
 span{
   color: white;
-  font-size: 15px;
+  font-size: 17px;
 }
 
 .badge {

@@ -1,9 +1,9 @@
 <nav class="navbar">
-  <div class="nav-left">
+  <div>
     <span  routerLink="/home">Home</span>
   </div>
   <div class="nav-right">
-    <a routerLink="/cart" class="cart-icon">
+    <a (click)="openCart()" class="cart-icon">
       <i class="fa-solid fa-cart-shopping custom-icon"></i> <span class="badge">{{ cartCount | number }}</span>
     </a>
     <div class="logout-wrapper">
