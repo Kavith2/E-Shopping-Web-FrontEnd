@@ -1,0 +1,42 @@
+<!-- Overlay -->
+<div class="overlay" *ngIf="showCart " (click)="closeCart()"></div>
+
+<!-- Cart Sidebar -->
+<div class="cart-sidebar" [class.open]="showCart && cartItems.length > 0" (click)="$event.stopPropagation()">
+  <h3 class="cart-title">Your Cart!</h3>
+
+  <div class="cart-item-card" *ngFor="let item of cartItems">
+    <img [src]="getProductImage(item.productId!)" class="cart-item-image" />
+
+    <div class="cart-item-details">
+      <h4>{{ item.productName }}</h4>
+
+      <div class="quantity-controls">
+        <button class="qty-btn" (click)="decreaseQuantity(item)">−</button>
+        <span>{{ item.quantity }}</span>
+        <button class="qty-btn" (click)="increaseQuantity(item)">+</button>
+      </div>
+
+      <p class="subtotal">Rs: {{ item.productPrice! * item.quantity | formatPrice }}</p>
+
+      <button class="remove-btn" (click)="removeItem(item.productId!)">
+        Remove
+      </button>
+    </div>
+  </div>
+
+  <div class="cart-summary">
+    <h3>Total: Rs {{ getTotal() | formatPrice}}</h3>
+    <button class="btn btn-primary w-100 mt-3 py-2" (click)="goToCheckout()">Checkout</button>
+  </div>
+  
+
+  <ng-container *ngIf="cartItems.length === 0">
+    <div class="empty-cart">
+      <span class="empty-icon">🛒</span>
+      <h3>Your cart is empty</h3>
+      <p>Looks like you haven’t added anything yet.</p>
+      <button routerLink="/products" class="shop-button">Start shopping</button>
+    </div>
+  </ng-container>
+</div>

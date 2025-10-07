@@ -1,0 +1,19 @@
+<nav class="navbar">
+  <div>
+    <span  routerLink="/home">Home</span>
+  </div>
+  <div class="nav-right">
+    <a (click)="openCart()" class="cart-icon">
+      <i class="fa-solid fa-cart-shopping custom-icon"></i> <span class="badge">{{ cartCount | number }}</span>
+    </a>
+    <div class="logout-wrapper">
+      <!-- Trigger Button -->
+      <button class="btn btn-secondary" (click)="toggleDropdown()">
+        <i class="fa-solid fa-power-off"></i>
+      </button>
+      <div class="dropdown-menu" [class.show]="showDropdown" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="#" (click)="logout()">Logout</a>
+      </div>
+    </div>
+  </div>
+</nav>
