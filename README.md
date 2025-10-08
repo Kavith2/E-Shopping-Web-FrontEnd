@@ -13,12 +13,18 @@
 
 Tech Stack
 Category	Technology
+
 Frontend Framework	Angular
+
 UI Libraries	Angular Material, Bootstrap
 Authentication	JWT
+
 Styling	SCSS / CSS3 / Flexbox
+
 HTTP Client	Angular HttpClient
+
 Package Manager	npm
+
 Build Tool	Angular CLI
 
 Setup & Installation
