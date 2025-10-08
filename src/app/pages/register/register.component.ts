@@ -11,13 +11,13 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  registerForm : FormGroup;
+  registerForm: FormGroup;
 
-   constructor(
+  constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar 
+    private snackBar: MatSnackBar
   ) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
@@ -29,7 +29,6 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.registerForm.invalid) return;
-
     const { name, email, password, confirmPassword } = this.registerForm.value;
 
     if (password !== confirmPassword) {
@@ -37,22 +36,21 @@ export class RegisterComponent {
       return;
     }
 
-    const payload: RegisterRequest = { name, email, password, confirmPassword  };
+    const payload: RegisterRequest = { name, email, password, confirmPassword };
 
     this.authService.register(payload).subscribe({
       next: () => {
         this.snackBar.open('Registration successful!', 'Close', {
-        duration: 3000, // milliseconds
-        verticalPosition: 'top',
-        panelClass: ['snackbar-success'] // Optional custom style
-});
+          duration: 3000, // milliseconds
+          verticalPosition: 'top',
+          panelClass: ['snackbar-success'] // Optional custom style
+        });
 
         this.router.navigate(['/login']);
       },
       error: (err) => {
-       console.error('Registration error:', err);
+        console.error('Registration error:', err);
         this.snackBar.open('Registration failed. Please try again.', 'Close', {
-        
         });
         this.registerForm.reset();
       }

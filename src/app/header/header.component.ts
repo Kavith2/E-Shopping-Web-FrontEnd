@@ -11,18 +11,18 @@ import { CartUiService } from '../services/cartUi.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-   cartItems: CartItem[] = [];
-    userId : string | null = null;
+  cartItems: CartItem[] = [];
+  userId: string | null = null;
   cartCount: number = 0;
   showDropdown = false;
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private cartService: CartService,
-    public cartuiService:CartUiService, 
-    private authService: AuthService) {}
+    public cartuiService: CartUiService,
+    private authService: AuthService) { }
 
- ngOnInit() {
+  ngOnInit() {
     const userId = this.authService.getUserId();
     if (userId) {
       this.cartService.getCartByUserId(userId).subscribe(); // initialize cart
@@ -33,19 +33,17 @@ export class HeaderComponent {
     });
   }
 
-  openCart(){
+  openCart() {
     this.cartuiService.openCart();
   }
-
 
   toggleDropdown() {
     this.showDropdown = !this.showDropdown;
   }
 
-
   logout(): void {
     localStorage.removeItem('token');
-     this.showDropdown = false;
+    this.showDropdown = false;
     this.router.navigate(['/login']);
   }
 

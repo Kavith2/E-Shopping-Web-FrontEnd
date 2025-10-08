@@ -9,15 +9,18 @@
   font-size: 2.5rem;
   margin-bottom: 30px;
   color: #333;
+
 }
 
-.products-header{
+.products-header {
   background: linear-gradient(to right, #e1664e, #c86a33);
   padding: 20px;
-  top: auto;
-  position:sticky;
+  top: 75px;
+  position: sticky;
   padding-right: 0%;
   text-align: center;
+  z-index: 1;
+  justify-content: space-between;
 }
 
 .products-grid {
@@ -55,6 +58,7 @@
   transform: scale(1.1);
   height: 350px;
 }
+
 .product-details {
   padding: 20px;
   display: flex;

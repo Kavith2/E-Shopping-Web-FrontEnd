@@ -10,16 +10,19 @@
   text-align: center;
   padding: 40px 10px;
 }
+
 .hero-content h1 {
   font-size: 48px;
   margin-bottom: 10px;
-   font-weight: 600;
+  font-weight: 600;
 }
+
 .hero-content p {
   font-size: 18px;
   margin-bottom: 30px;
   margin-top: 25px;
 }
+
 .hero-content button {
   background: white;
   color: #ff512f;
@@ -30,47 +33,52 @@
   cursor: pointer;
   transition: background 0.3s ease;
 }
+
 .hero-content button:hover {
   background: #fceaea;
 }
 
-/* Categories */
 .categories {
   padding: 60px 20px;
   text-align: center;
- 
 }
+
 .category-list {
   display: flex;
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
 }
+
 .category-card {
   width: 200px;
   cursor: pointer;
   transition: transform 0.3s;
 }
+
 .category-card img {
   width: 100%;
   height: 140px;
   object-fit: cover;
-   box-shadow: 0 10px 25px rgba(2, 2, 2, 0.4);
+  box-shadow: 0 10px 25px rgba(2, 2, 2, 0.4);
   border-radius: 8px;
 }
+
 .category-card p {
   margin-top: 10px;
   font-weight: 500;
 }
+
 .category-card:hover {
   transform: translateY(-5px);
 }
 
-/* New Arrivals & Product Sections */
-.new-arrivals, .featured-products {
+.new-arrivals,
+.featured-products {
   padding: 60px 20px;
   text-align: center;
 }
+
 .product-list {
   display: flex;
   flex-wrap: wrap;
@@ -84,22 +92,26 @@
   padding: 60px 20px;
   text-align: center;
 }
+
 .testimonial-list {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 30px;
 }
+
 .testimonial {
   width: 250px;
   background: white;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 .testimonial p {
   font-style: italic;
 }
+
 .testimonial span {
   display: block;
   margin-top: 10px;
@@ -114,6 +126,7 @@
   text-align: center;
   padding: 60px 20px;
 }
+
 .newsletter-form {
   margin-top: 20px;
   display: flex;
@@ -121,12 +134,14 @@
   gap: 10px;
   flex-wrap: wrap;
 }
+
 .newsletter-form input {
   padding: 10px;
   border: none;
   border-radius: 6px;
   width: 250px;
 }
+
 .newsletter-form button {
   padding: 10px 20px;
   border: none;
@@ -136,6 +151,7 @@
   font-weight: bold;
   cursor: pointer;
 }
+
 .newsletter-form button:hover {
   background: #ffe7e7;
 }
@@ -147,6 +163,7 @@
   text-align: center;
   padding: 30px 20px;
 }
+
 .footer-links {
   display: flex;
   justify-content: center;
@@ -154,10 +171,12 @@
   flex-wrap: wrap;
   margin-bottom: 15px;
 }
+
 .footer-links a {
   color: #ccc;
   text-decoration: none;
 }
+
 .footer-links a:hover {
   color: white;
 }

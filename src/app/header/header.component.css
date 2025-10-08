@@ -1,8 +1,8 @@
 .navbar {
   display: flex;
-  position:sticky;
+  position: sticky;
   top: 0;
-  justify-content:space-between;
+  justify-content: space-between;
   padding: 20px;
   z-index: 1;
   background: #403f3f;
@@ -14,10 +14,10 @@
 }
 
 .custom-icon {
-  font-size: 25px; 
+  font-size: 25px;
 }
 
-span{
+span {
   color: white;
   font-size: 17px;
 }
@@ -37,29 +37,29 @@ span{
   display: inline-block;
 }
 
- .logout-button {
-  background-color:  #403f3f; 
+.logout-button {
+  background-color: #403f3f;
   color: #da5757;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 25px; 
- }
-
- .dropdown-menu{
-  position: absolute;
-  top: 100%;       /* dropdown appears below button */
-  right: 0;        /* align to right */
-  min-width: 50px; /* adjust width as needed */
-  margin-top: 5px;
-  width: 90px;     /* narrower width */
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  background-color: #da5757;
-  z-index: 100;
-  
+  font-size: 25px;
 }
 
-.dropdown-item{
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 50px;
+  margin-top: 5px;
+  width: 90px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: #da5757;
+  z-index: 100;
+
+}
+
+.dropdown-item {
   background-color: #da5757;
 }

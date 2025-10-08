@@ -29,7 +29,7 @@
     <h3>Total: Rs {{ getTotal() | formatPrice}}</h3>
     <button class="btn btn-primary w-100 mt-3 py-2" (click)="goToCheckout()">Checkout</button>
   </div>
-  
+
 
   <ng-container *ngIf="cartItems.length === 0">
     <div class="empty-cart">

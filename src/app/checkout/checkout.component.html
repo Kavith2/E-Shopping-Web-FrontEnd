@@ -1,12 +1,12 @@
 <div class="checkout-container">
-    <h2 class="text-center">Checkout!</h2>
+    <h2>Checkout!</h2>
 </div>
 
 <div class="row mt-4 p-4" *ngIf="!orderPlaced;">
     <div class="col-lg-6 col-md-9 mb-4">
         <div class="form-color card shadow p-3 ">
             <h4 class="mb-3">Customer Information</h4>
-            <form [formGroup]="checkoutForm">
+            <form [formGroup]="checkoutForm1">
                 <mat-form-field appearance="outline" class=" col-md-12">
                     <mat-label>Name</mat-label>
                     <input matInput placeholder="Enter name" formControlName="name" />
@@ -25,26 +25,37 @@
             </form>
         </div>
 
-        <div class="form-color card shadow p-3 mt-3" style=" border: solid rgb(77, 42, 235) 1px;">
+        <div class="form-color card shadow p-3 mt-3">
             <h4>Payment Details</h4>
-            <mat-radio-group aria-label="Select an option">
+            <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedPayment" (change)="disablePlaceOrder()"
+                [disabled]="!this.checkoutForm1.valid">
                 <mat-radio-button value="1">Cash On Delivery</mat-radio-button>
-                <mat-radio-button value="2">  <img src="assets/images/visa.png" alt="Card" class="radio-icon" />
+                <mat-radio-button value="2"> <img src="assets/images/visa.png" alt="Card" class="radio-icon" />
                     Credit/Debit Card</mat-radio-button>
             </mat-radio-group>
-            <form [formGroup]="checkoutForm" class="mt-3">
+            <form [formGroup]="checkoutForm2" *ngIf="selectedPayment == '2'" class="mt-3">
                 <mat-form-field appearance="outline" class="col-md-12">
                     <mat-label>Card Number</mat-label>
-                    <input matInput placeholder="Enter card number" type="number" formControlName="cardNumber" />
+                    <input matInput placeholder="Enter card number" (input)="onCardNumberInput($event)" type="text"
+                        formControlName="cardNumber" maxlength="19" />
                 </mat-form-field>
                 <div>
-                    <mat-form-field appearance="outline" class="col-md-6">
-                        <mat-label>Expiration Date </mat-label>
-                        <input matInput placeholder="MM/YY" type="date" formControlName="expirationDate" />
+                    <mat-form-field appearance="outline" class="col-md-2 ms-1">
+                        <mat-label>Month</mat-label>
+                        <mat-select formControlName="expMonth">
+                            <mat-option *ngFor="let m of months" [value]="m.value">{{ m.label }}</mat-option>
+                        </mat-select>
                     </mat-form-field>
-                    <mat-form-field appearance="outline" class="col-md-6 ps-3">
+
+                    <mat-form-field appearance="outline" class="col-md-2 ms-3">
+                        <mat-label>Year</mat-label>
+                        <mat-select formControlName="expYear">
+                            <mat-option *ngFor="let y of years" [value]="y">{{ y }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="col-md-7 ms-4">
                         <mat-label>CVV</mat-label>
-                        <input matInput placeholder="Enter CVV" type="number" formControlName="cvv" />
+                        <input matInput placeholder="Enter CVV" type="number" maxlength="3" formControlName="cvv" />
                     </mat-form-field>
                 </div>
 
@@ -54,7 +65,7 @@
 
     <!-- Order Summary -->
     <div class="col-lg-6 col-md-12 ">
-        <div class="card shadow-sm p-2 order">
+        <div class="form-color card shadow p-2">
             <h4 class="mb-3">Order Summary</h4>
 
             <!-- Example Items -->
@@ -77,7 +88,7 @@
                 <span>Total:</span>
                 <span>Rs: {{ checkoutPrice() | formatPrice}}</span>
             </div>
-            <button type="button" [disabled]="!checkoutForm.valid" class="btn btn-success wd-100 mt-3"
+            <button type="button" [disabled]="disableBtn" class="btn btn-success wd-100 mt-3"
                 (click)="placeOrder()">Place Order</button>
         </div>
     </div>
@@ -86,7 +97,7 @@
 
 
 <div *ngIf="orderPlaced " class="thank-you text-center">
-    <h1>🎉 Thank you for your order!</h1>
+    <h1>🎉 Thank you for your order! </h1>
     <p>Your order has been placed successfully.</p>
     <button routerLink="/products" class="btn btn-success mt-4">Continue Shopping</button>
 </div>

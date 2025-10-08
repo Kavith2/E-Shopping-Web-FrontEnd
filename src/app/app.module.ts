@@ -20,6 +20,9 @@ import { CartComponent } from './pages/cart/cart.component';
 import { HeaderComponent } from './header/header.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+
 
 
   // <-- here
@@ -50,7 +53,9 @@ import { MatRadioModule } from '@angular/material/radio';
     HttpClientModule,
     MatSnackBarModule,
     FormsModule,
-    MatRadioModule
+    MatRadioModule,
+    MatSelectModule ,
+    MatOptionModule
     
    ,
   ],

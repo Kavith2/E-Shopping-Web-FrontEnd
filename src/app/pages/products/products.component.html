@@ -23,7 +23,7 @@
 
         <div class="product-footer">
           <p class="product-price">Rs. {{ product.price | formatPrice }}</p>
-          <button class="buy-button">Add to Cart</button>
+          <button (click)="addToCart(product)" class="buy-button">Add to Cart</button>
         </div>
       </div>
     </div>

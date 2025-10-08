@@ -17,13 +17,33 @@ import { RemoveFromCartRequest } from '../models/remove-from-cart-request';
 })
 export class CheckoutComponent {
   envirnoment = environment;
-  checkoutForm: FormGroup;
+  checkoutForm1: FormGroup;
+  checkoutForm2: FormGroup;
   CartItem: CartItem[] = [];
-  Product: Products[]=[]
+  Product: Products[] = []
   cart: Cart = new Cart();
   orderPlaced: boolean = false;
   userId: string | null = null;
-  selectedPayement: string = "1";
+  disableBtn: boolean = true;
+  selectedPayment: string = "";
+  
+  months = [
+    { value: '01', label: '01 - Jan' },
+    { value: '02', label: '02 - Feb' },
+    { value: '03', label: '03 - Mar' },
+    { value: '04', label: '04 - Apr' },
+    { value: '05', label: '05 - May' },
+    { value: '06', label: '06 - Jun' },
+    { value: '07', label: '07 - Jul' },
+    { value: '08', label: '08 - Aug' },
+    { value: '09', label: '09 - Sep' },
+    { value: '10', label: '10 - Oct' },
+    { value: '11', label: '11 - Nov' },
+    { value: '12', label: '12 - Dec' }
+  ];
+
+  years = Array.from({ length: 15 }, (_, i) => new Date().getFullYear() + i);
+
 
   constructor(
     private fb: FormBuilder,
@@ -32,13 +52,17 @@ export class CheckoutComponent {
     private productService: ProductService
 
   ) {
-    this.checkoutForm = this.fb.group({
+    this.checkoutForm1 = this.fb.group({
       address: ['', [Validators.required]],
       email: ['', Validators.required],
-      name: ['', Validators.required],
-      cvv: ['', Validators.required],
-      expirationDate: ['', Validators.required],
-      cardNumber: ['', Validators.required]
+      name: ['', Validators.required]
+    });
+
+    this.checkoutForm2 = this.fb.group({
+      cvv: ['', [Validators.required, Validators.minLength(3)]],
+      expMonth: ['', Validators.required],
+      expYear: ['', Validators.required],
+      cardNumber: ['', [Validators.required, Validators.minLength(16), Validators.maxLength(19)]]
     });
   }
 
@@ -50,81 +74,101 @@ export class CheckoutComponent {
     }
     this.loadCartitems();
 
+    this.checkoutForm2.valueChanges.subscribe(() => {
+      this.disablePlaceOrder();
+    });
+
     this.cartService.getCartByUserId(this.userId!).subscribe(cart => {
       this.cart = cart;   // now cart.items has actual products
     });
 
     this.productService.getAllProducts().subscribe({
-  next: (products) => {
-    this.Product = products;
-  },
-  error: (err) => {
-    console.error('Error loading products:', err);
+      next: (products) => {
+        this.Product = products;
+      },
+      error: (err) => {
+        console.error('Error loading products:', err);
+      }
+    });
+
+
   }
-});
-    
+
+  getProductImage(productId: string) {
+    const product = this.Product.find(p => p.id === productId);
+    if (product?.image) {
+      return environment.apiUrl + product.image;
+    }
+    return environment.apiUrl;
+  }
+
+  disablePlaceOrder() {
+    if (this.selectedPayment === "") {
+      this.disableBtn = true;
+    } else if (this.selectedPayment === "1") {
+      this.disableBtn = !this.checkoutForm1.valid;
+    }
+    else if (this.selectedPayment === "2") {
+      this.disableBtn = !this.checkoutForm2.valid;
+    } else {
+      this.disableBtn = false;
+    }
 
   }
 
-getProductImage(productId: string) {
-  const product = this.Product.find(p => p.id === productId);
-  if (product?.image) {
-    return  environment.apiUrl +  product.image;
+  onCardNumberInput(event: any) {
+    const value = event.target.value.replace(/\D/g, ''); // remove non-digits
+    event.target.value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
   }
-  return environment.apiUrl;
-}
 
 
-increaseQuantity(item: CartItem): void {
-  item.quantity++;
-  this.updateQuantity(item.productId!, item.quantity);
-}
-
-decreaseQuantity(item: CartItem): void {
-  if (item.quantity > 1) {
-    item.quantity--;
+  increaseQuantity(item: CartItem): void {
+    item.quantity++;
     this.updateQuantity(item.productId!, item.quantity);
   }
-}
 
-loadCart(): void {
-  if (!this.userId) return;
-
-  this.cartService.getCartByUserId(this.userId).subscribe({
-    next: (cart) => {
-      this.CartItem = cart?.items || [];
-    },
-    error: (error) => {
-      console.error('Error loading cart items', error);
+  decreaseQuantity(item: CartItem): void {
+    if (item.quantity > 1) {
+      item.quantity--;
+      this.updateQuantity(item.productId!, item.quantity);
     }
-  });
-}
+  }
 
- removeItem(productId: string): void {
-     if (!this.userId) return;
+
+  removeItem(productId: string): void {
+    if (!this.userId) return;
     const request: RemoveFromCartRequest = {
       UserId: this.userId,
       ProductId: productId
     };
+
     this.cartService.removeFromCart(request).subscribe(() => {
-      this.loadCart();
+      this.loadCartitems();
     });
   }
 
-updateQuantity(productId: string, quantity: number) {
-  const item = this.CartItem.find(i => i.productId === productId);
-  if (!item || !this.userId) return;
+  updateQuantity(productId: string, quantity: number) {
+    const item = this.CartItem.find(i => i.productId === productId);
+    if (!item || !this.userId) return;
 
-  console.log('Updating quantity for productId:', productId, 'to', quantity);
-  item.quantity = quantity;
-  item.subTotal = item.quantity * item.productPrice!;
+    console.log('Updating quantity for productId:', productId, 'to', quantity);
+    item.quantity = quantity;
+    item.subTotal = item.quantity * item.productPrice!;
 
-  const request: UpdateQuantityRequest = {
-    UserId: this.userId,
-    Quantity: quantity
-  };
+    const request: UpdateQuantityRequest = {
+      UserId: this.userId,
+      Quantity: quantity
+    };
 
-}
+    this.cartService.updateQuantity(productId, request)
+      .subscribe({
+        next: () => {
+          this.loadCartitems();
+        },
+        error: (err) => console.error('Failed to update quantity', err)
+      });
+
+  }
 
   loadCartitems() {
     this.cartService.getCartByUserId(this.userId!).subscribe({
@@ -148,18 +192,18 @@ updateQuantity(productId: string, quantity: number) {
     }
     const order = {
       userId: this.userId!,
-      items: this.cart.items,
-      totalPrice: this.checkoutPrice()
+      items: this.CartItem
+
     };
 
-    console.log('Placing order:', order);
 
     this.cartService.saveOrder(order).subscribe({
       next: () => {
-        this.cart.items = [];
-        this.checkoutForm.reset();
+        this.CartItem = [];
+        this.checkoutForm1.reset();
+        this.checkoutForm2.reset();
         alert('Order placed successfully!');
-        this.orderPlaced = true; 
+        this.orderPlaced = true;
         this.cartService.clearCart(this.userId!).subscribe();
       },
       error: err => console.error('Error placing order', err)

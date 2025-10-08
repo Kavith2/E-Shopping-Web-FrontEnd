@@ -20,17 +20,16 @@ export class ProductCategoryComponent implements OnInit {
   category: string = '';
   expandedIndex: number | null = null;
 
-
   constructor(
     private productService: ProductService,
     private route: ActivatedRoute,
     private cartService: CartService,
-    public cartuiService:CartUiService,
+    public cartuiService: CartUiService,
     private authService: AuthService,
-     private snackBar: MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar
+  ) { }
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const category = params.get('name');
       if (category) {
@@ -44,7 +43,7 @@ export class ProductCategoryComponent implements OnInit {
   }
 
   addToCart(product: any) {
-    const userId = this.authService.getUserId(); 
+    const userId = this.authService.getUserId();
     const request: AddToCartRequest = {
       UserId: userId!,
       ProductPrice: product.price,
@@ -54,17 +53,18 @@ export class ProductCategoryComponent implements OnInit {
     };
 
     this.cartService.addToCart(request).subscribe({
-      next: () =>{ this.snackBar.open('Product added to cart!', 'Close', {
-        duration: 3000,
-        panelClass: ['snackbar-success'],
-      }),
-      this.cartuiService.openCart();
+      next: () => {
+        this.snackBar.open('Product added to cart!', 'Close', {
+          duration: 3000,
+          panelClass: ['snackbar-success'],
+        }),
+        this.cartuiService.openCart();
       },
-    error: (err) => console.error('Error adding to cart:', err)
+      error: (err) => console.error('Error adding to cart:', err)
     });
   }
 
   toggleExpand(index: number): void {
-      this.expandedIndex = this.expandedIndex === index ? null : index;
-    }
+    this.expandedIndex = this.expandedIndex === index ? null : index;
+  }
 }

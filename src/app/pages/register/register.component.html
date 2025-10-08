@@ -12,7 +12,6 @@
                         <input matInput placeholder="Enter name" formControlName="name" />
                     </mat-form-field>
 
-
                     <mat-form-field appearance="outline" class="small-input">
                         <mat-label>Email</mat-label>
                         <input matInput type="email" placeholder="Enter your email" formControlName="email" />
@@ -25,12 +24,11 @@
 
                     <mat-form-field appearance="outline" class="small-input">
                         <mat-label>Confirm Password</mat-label>
-                        <input matInput type="password" placeholder="Confirm password" formControlName="confirmPassword" />
+                        <input matInput type="password" placeholder="Confirm password"
+                            formControlName="confirmPassword" />
                     </mat-form-field>
 
-
-
-                    <button class="login-button" type="submit"  [disabled]="registerForm.invalid">Register</button>
+                    <button class="login-button" type="submit" [disabled]="registerForm.invalid">Register</button>
                 </form>
             </div>
         </div>

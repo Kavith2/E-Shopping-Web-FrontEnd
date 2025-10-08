@@ -17,18 +17,18 @@ import { environment } from 'src/environments/environment';
 })
 export class CartComponent {
   environment = environment;
-    cartItems: CartItem[] = [];
-    Products: Products[] = [];
-    EmptyCart:boolean = false;
-    productName: string = '';
-    userId : string | null = null;
-    showCart: boolean = false;
+  cartItems: CartItem[] = [];
+  Products: Products[] = [];
+  EmptyCart: boolean = false;
+  productName: string = '';
+  userId: string | null = null;
+  showCart: boolean = false;
 
   constructor(private cartService: CartService,
-              private authService: AuthService,
-              private productService: ProductService,
-              public cartuiService:CartUiService,
-              private router:Router) {}
+    private authService: AuthService,
+    private productService: ProductService,
+    public cartuiService: CartUiService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.userId = this.authService.getUserId();
@@ -38,59 +38,48 @@ export class CartComponent {
     }
     this.cartuiService.cartVisible$.subscribe(isVisible => {
       this.showCart = isVisible;
-      if(isVisible){
-      this.loadCart();
+      if (isVisible) {
+        this.loadCart();
       }
     });
 
     this.productService.getAllProducts().subscribe({
-  next: (products) => {
-    this.Products = products;
-  },
-  error: (err) => {
-    console.error('Error loading products:', err);
-  }
-});
-    
-
+      next: (products) => {
+        this.Products = products;
+      },
+      error: (err) => {
+        console.error('Error loading products:', err);
+      }
+    });
   }
 
-getProductImage(productId: string): string {
-  const product = this.Products.find(p => p.id === productId);
-
-  // If product found → return full backend URL + image path
-  if (product?.image) {
-    return this.environment.apiUrl + product.image;
-  }
-
-  // Fallback (if product not found or has no image)
-  return this.environment.apiUrl;
-}
-
-
-
-
-loadCart(): void {
-  if (!this.userId) return;
-
-  this.cartService.getCartByUserId(this.userId).subscribe({
-    next: (cart) => {
-      this.cartItems = cart?.items || [];
-    },
-    error: (error) => {
-      console.error('Error loading cart items', error);
+  getProductImage(productId: string): string {
+    const product = this.Products.find(p => p.id === productId);
+    if (product?.image) {
+      return this.environment.apiUrl + product.image;
     }
-  });
-}
+    return this.environment.apiUrl;
+  }
 
+  loadCart(): void {
+    if (!this.userId) return;
 
- closeCart() {
+    this.cartService.getCartByUserId(this.userId).subscribe({
+      next: (cart) => {
+        this.cartItems = cart?.items || [];
+      },
+      error: (error) => {
+        console.error('Error loading cart items', error);
+      }
+    });
+  }
+
+  closeCart() {
     this.cartuiService.closeCart();
   }
 
-
   removeItem(productId: string): void {
-     if (!this.userId) return;
+    if (!this.userId) return;
     const request: RemoveFromCartRequest = {
       UserId: this.userId,
       ProductId: productId
@@ -100,50 +89,46 @@ loadCart(): void {
     });
   }
 
-updateQuantity(productId: string, quantity: number) {
-  const item = this.cartItems.find(i => i.productId === productId);
-  if (!item || !this.userId) return;
+  updateQuantity(productId: string, quantity: number) {
+    const item = this.cartItems.find(i => i.productId === productId);
+    if (!item || !this.userId) return;
+    item.quantity = quantity;
+    item.subTotal = item.quantity * item.productPrice!;
 
-  console.log('Updating quantity for productId:', productId, 'to', quantity);
-  item.quantity = quantity;
-  item.subTotal = item.quantity * item.productPrice!;
+    const request: UpdateQuantityRequest = {
+      UserId: this.userId,
+      Quantity: quantity
+    };
 
-  const request: UpdateQuantityRequest = {
-    UserId: this.userId,
-    Quantity: quantity
-  };
+    this.cartService.updateQuantity(productId, request)
+      .subscribe({
+        next: () => {
+          this.loadCart();
+        },
+        error: (err) => console.error('Failed to update quantity', err)
+      });
+  }
 
-
-  this.cartService.updateQuantity(productId, request)
-    .subscribe({
-      next: () => {
-        this.loadCart();
-      },
-      error: (err) => console.error('Failed to update quantity', err)
-    });
-}
-
-increaseQuantity(item: CartItem): void {
-  item.quantity++;
-  this.updateQuantity(item.productId!, item.quantity);
-}
-
-decreaseQuantity(item: CartItem): void {
-  if (item.quantity > 1) {
-    item.quantity--;
+  increaseQuantity(item: CartItem): void {
+    item.quantity++;
     this.updateQuantity(item.productId!, item.quantity);
   }
-}
 
+  decreaseQuantity(item: CartItem): void {
+    if (item.quantity > 1) {
+      item.quantity--;
+      this.updateQuantity(item.productId!, item.quantity);
+    }
+  }
 
-goToCheckout(): void {
-  this.router.navigate(['/checkout']);
-  this.closeCart();
-}
+  goToCheckout(): void {
+    this.router.navigate(['/checkout']);
+    this.closeCart();
+  }
 
-getTotal(): number {
-  return this.cartItems.reduce((sum, item) => sum + (item.productPrice || 0) * item.quantity, 0);
-}
+  getTotal(): number {
+    return this.cartItems.reduce((sum, item) => sum + (item.productPrice || 0) * item.quantity, 0);
+  }
 
 
 }
